@@ -29,10 +29,10 @@ void curtime(int *h, int *m, int *s)
 
 void get_root_size(int *w, int *h)
 {
-	XWindowAttributes win_attr;
-	XGetWindowAttributes(dis, root, &win_attr);
-	*w = win_attr.width;
-	*h = win_attr.height;
+	XWindowAttributes a;
+	XGetWindowAttributes(dis, root, &a);
+	*w = a.width;
+	*h = a.height;
 }
 
 
