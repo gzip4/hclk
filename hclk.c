@@ -14,10 +14,6 @@ Window win, root;
 GC gc;
 unsigned long black, white;
 
-int x11_fd;
-fd_set in_fds;
-struct timeval tv;
-
 void curtime(int *h, int *m, int *s)
 {
 	time_t now;
@@ -155,7 +151,7 @@ int main()
 	screen = DefaultScreen(dis);
 	black = BlackPixel(dis,screen);
 	white = WhitePixel(dis, screen);
-	keycode = XKeysymToKeycode(dis,XK_Z);
+	keycode = XKeysymToKeycode(dis, XK_Z);
 	root = DefaultRootWindow(dis);
 
 	win = XCreateWindow(dis, root, 0, 0, 100, 100, 0,
