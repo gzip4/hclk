@@ -24,7 +24,6 @@ void curtime(int *h, int *m, int *s)
 	*h = tm->tm_hour;
 	*m = tm->tm_min;
 	*s = tm->tm_sec;
-	//printf("%02d:%02d:%02d\n", tm->tm_hour, tm->tm_min, tm->tm_sec);
 }
 
 void get_root_size(int *w, int *h)
@@ -111,7 +110,6 @@ void draw_win()
 	pixmap = XCreatePixmap(dis, root, w, h, depth);
 
 	XSetForeground(dis, gc, 0xffffff);
-	//XSetBackground(dis, gc, 0xd0a010);
 	XFillRectangle(dis, pixmap, gc, 0, 0, w, h);
 
 	draw(pixmap, w, h);
