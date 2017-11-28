@@ -213,6 +213,7 @@ int main()
 					// delete retriggered KeyPress event
 					XNextEvent(dis, &nev);
 					is_retriggered = 1;
+					draw_win();
 				}
 			}
 
