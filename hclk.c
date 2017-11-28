@@ -125,7 +125,6 @@ void show_window()
 {
 	int rw, rh;
 
-	XClearWindow(dis, win);
 	get_root_size(&rw, &rh);
 	XResizeWindow(dis, win, (int) (rw*0.9), (int) (rh*0.9));
 	XMapRaised(dis, win);
