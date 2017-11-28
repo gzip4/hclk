@@ -179,7 +179,7 @@ int main()
 		tv.tv_sec = 1;
 		num_ready_fds = select(x11_fd + 1, &in_fds, NULL, NULL, &tv);
 		if (num_ready_fds == 0) {
-			draw_win();
+			printf("."); fflush(stdout);
 		}
 
 		while (XPending(dis)) {
