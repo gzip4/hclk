@@ -127,16 +127,25 @@ void draw_win()
 }
 
 
+void show_window()
+{
+	int rw, rh;
+
+	XClearWindow(dis, win);
+	get_root_size(&rw, &rh);
+	XResizeWindow(dis, win, (int) (rw*0.9), (int) (rh*0.9));
+	XMapRaised(dis, win);
+	XMoveWindow(dis, win, (int) (rw*0.04), (int) (rh*0.04));
+}
+
+
 int main()
 {
 	XSetWindowAttributes attrs;
 	XEvent event, nev;
 	int keycode;
 	int is_retriggered;
-	unsigned rc;
 	unsigned modifier = Mod4Mask;
-	int rw, rh;
-	int num_ready_fds;
 
 	dis = XOpenDisplay((char *)0);
 	if (!dis) {
@@ -149,7 +158,6 @@ int main()
 	keycode = XKeysymToKeycode(dis,XK_Z);
 	root = DefaultRootWindow(dis);
 
-	//win = XCreateSimpleWindow(dis, DefaultRootWindow(dis), 0, 0, 1, 1, 0, None, None);
 	win = XCreateWindow(dis, root, 0, 0, 100, 100, 0,
 		DefaultDepth(dis, screen),
 		InputOutput,
@@ -158,46 +166,23 @@ int main()
 
 	XSetStandardProperties(dis, win, "", "", None, NULL, 0, NULL);
 	XSelectInput(dis, win, ExposureMask|KeyPressMask);
-
-	gc = XCreateGC(dis, win, 0, 0);
-	XSetBackground(dis, gc, white);
-	XSetForeground(dis, gc, black);
-
-	rc = XGrabKey(dis, keycode, modifier,          root, False, GrabModeAsync, GrabModeAsync); // Mod1Mask
-	rc = XGrabKey(dis, keycode, modifier|Mod2Mask, root, False, GrabModeAsync, GrabModeAsync); // Mod1Mask
-	//rc = XGrabKey(dis, keycode, AnyModifier, root, False, GrabModeAsync, GrabModeAsync);
-	//printf("XGrabKey=%d\n", rc==Success);
-
 	XSelectInput(dis, root, KeyPressMask);
 
-	x11_fd = ConnectionNumber(dis);
+	gc = XCreateGC(dis, win, 0, 0);
+
+	// Win+Z
+	XGrabKey(dis, keycode, modifier,          root, False, GrabModeAsync, GrabModeAsync);
+	XGrabKey(dis, keycode, modifier|Mod2Mask, root, False, GrabModeAsync, GrabModeAsync);
 
 	while(1) {
-		FD_ZERO(&in_fds);
-		FD_SET(x11_fd, &in_fds);
-		tv.tv_usec = 0;
-		tv.tv_sec = 1;
-		num_ready_fds = select(x11_fd + 1, &in_fds, NULL, NULL, &tv);
-		if (num_ready_fds == 0) {
-			draw_win();
-		}
-
-		while (XPending(dis)) {
 		XNextEvent(dis, &event);
 
 		if (event.type==Expose && event.xexpose.count==0) {
 			draw_win();
-			//printf("Expose\n");
 		}
 
 		if (event.type==KeyPress && event.xkey.keycode==keycode) {
-			//XClearWindow(dis, win);
-			get_root_size(&rw, &rh);
-			XResizeWindow(dis, win, (int) (rw*0.9), (int) (rh*0.9));
-			XMapWindow(dis, win);
-			XMoveWindow(dis, win, (int) (rw*0.04), (int) (rh*0.04));
-			//XMapRaised(dis, win);
-			//printf("KeyPress %x\n", event.xkey.state);
+			show_window();
 		}
 
 		if (event.type==KeyRelease && event.xkey.keycode==keycode) {
@@ -219,13 +204,7 @@ int main()
 
 			if ( !is_retriggered ) {
 				XUnmapWindow(dis, win);
-				//printf("KeyRelease\n");
 			}
-		}
-
-		//if (event.type==ButtonPress) {
-		//	break;
-		//}
 		}
 	}
 
