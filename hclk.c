@@ -18,7 +18,7 @@ int x11_fd;
 fd_set in_fds;
 struct timeval tv;
 
-void now(int *h, int *m, int *s)
+void curtime(int *h, int *m, int *s)
 {
 	time_t now;
 	struct tm *tm;
@@ -66,7 +66,7 @@ void draw(Drawable dr, int ww, int wh)
 		alpha += PI / 6.0f;
 	}
 
-	now(&H, &M, &S);
+	curtime(&H, &M, &S);
 
 	// HOUR
 	alpha = 30.0f * (float) H;
