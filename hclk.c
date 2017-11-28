@@ -57,7 +57,7 @@ void draw(Drawable dr, int ww, int wh)
 	for (i = 0; i < 12; ++i) {
 		y = (short) ((ch - 50) * sinf( alpha )); y += ch;
 		x = (short) ((ch - 50) * cosf( alpha )); x += cw;
-		XFillRectangle(dis, dr, gc, x-3, y-3, 6, 6);
+		XFillRectangle(dis, dr, gc, x-5, y-5, 10, 10);
 		alpha += PI / 6.0f;
 	}
 
