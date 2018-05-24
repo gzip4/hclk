@@ -13,6 +13,7 @@ int screen;
 Window win, root;
 GC gc;
 unsigned long black, white;
+char title[] = "Hotkey clock";
 
 void curtime(int *h, int *m, int *s)
 {
@@ -160,7 +161,7 @@ int main()
 		0UL, &attrs);	// all defaults
 
 	XSetWMProtocols(dis, win, &wmDeleteMessage, 1);
-	XSetStandardProperties(dis, win, "", "", None, NULL, 0, NULL);
+	XSetStandardProperties(dis, win, title, title, None, NULL, 0, NULL);
 	XSelectInput(dis, win, ExposureMask|KeyPressMask);
 	XSelectInput(dis, root, KeyPressMask);
 
