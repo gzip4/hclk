@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <sys/time.h>
 #include <math.h>
@@ -135,7 +136,7 @@ void show_window()
 }
 
 
-int main()
+int main(int argc, char *argv[])
 {
 	Atom wmDeleteMessage;
 	XSetWindowAttributes attrs;
@@ -143,6 +144,15 @@ int main()
 	int keycode;
 	int is_retriggered;
 	unsigned modifier = Mod4Mask;
+	int i;
+
+	for (i = 1; i < argc; ++i) {
+		if (0 == strcmp("-h", argv[i])) {
+			printf("Hotkey clock v0.9\n");
+			return 0;
+		}
+	}
+
 
 	dis = XOpenDisplay((char *)0);
 	if (!dis) {
