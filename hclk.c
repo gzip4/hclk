@@ -134,6 +134,7 @@ void show_window()
 
 int main()
 {
+	Atom wmDeleteMessage;
 	XSetWindowAttributes attrs;
 	XEvent event, nev;
 	int keycode;
@@ -150,6 +151,7 @@ int main()
 	white = WhitePixel(dis, screen);
 	keycode = XKeysymToKeycode(dis, XK_Z);
 	root = DefaultRootWindow(dis);
+	wmDeleteMessage = XInternAtom(dis, "WM_DELETE_WINDOW", False);
 
 	win = XCreateWindow(dis, root, 0, 0, 100, 100, 0,
 		DefaultDepth(dis, screen),
@@ -157,6 +159,7 @@ int main()
 		DefaultVisual(dis, screen),
 		0UL, &attrs);	// all defaults
 
+	XSetWMProtocols(dis, win, &wmDeleteMessage, 1);
 	XSetStandardProperties(dis, win, "", "", None, NULL, 0, NULL);
 	XSelectInput(dis, win, ExposureMask|KeyPressMask);
 	XSelectInput(dis, root, KeyPressMask);
@@ -169,6 +172,11 @@ int main()
 
 	while(1) {
 		XNextEvent(dis, &event);
+
+		if (event.type==ClientMessage
+		    && event.xclient.data.l[0]==wmDeleteMessage) {
+			// ignore window close
+		}
 
 		if (event.type==Expose && event.xexpose.count==0) {
 			draw_win();
