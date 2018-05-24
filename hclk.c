@@ -118,6 +118,8 @@ void draw_win()
 	XCopyArea(dis, pixmap, win, gc, 0, 0, w, h, 0, 0);
 	XFreePixmap(dis, pixmap);
 
+	//XSetForeground(dis, gc, black);
+	//XSetBackground(dis, gc, white);
 	//XDrawImageString(dis, win, gc, 10, 10, "pixmap", 6);
 }
 
